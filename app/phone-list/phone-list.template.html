@@ -21,14 +21,20 @@
     </div>
     <div class="col-md-10">
       <ul class="phones">
-        <li ng-repeat="phone in $ctrl.phones | filter:$ctrl.query | orderBy:$ctrl.orderProp">
-          <span>{{phone.name}}</span>
+        <li ng-repeat="phone in $ctrl.phones | filter:$ctrl.query | orderBy:$ctrl.orderProp" class="thumbnail">
+          <a href="#!/phones/{{phone.id}}" class="thumb">
+            <img ng-src="{{phone.imageUrl}}" alt="{{phone.name}}" />
+            <!-- <img src="{{phone.imageUrl}}" alt="{{phone.name}}" /> -->
+            <!-- ng-src말고 src로 쓰면 request error 뜸. request http://localhost:8000/%7B%7Bphone.imageUrl%7D%7D -->
+            <!-- AngularJS가 표현식을 평가하고 유효한 주소를 삽입하기 전인 img 태그에 도달하는 즉시 브라우저가 잘못된 이미지 주소에 대한 요청을 실행한다는 것입니다. -->
+          </a>
+          <a href="#!/phones/{{phone.id}}">{{phone.name}}</a>
           <p>{{phone.snippet}}</p>
         </li>
       </ul>
     </div>
   </div>
   <div class="row">
-    <pre>      {{$ctrl.phones | filter:$ctrl.query | orderBy:$ctrl.orderProp | json}}</pre>
+    <pre>{{$ctrl.phones | filter:$ctrl.query | orderBy:$ctrl.orderProp | json}}</pre>
   </div>
 </div>

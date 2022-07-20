@@ -24,9 +24,7 @@ describe('PhoneCat Application', function () {
       var queryField = element(by.model('$ctrl.query'));
       var orderSelect = element(by.model('$ctrl.orderProp'));
       var nameOption = orderSelect.element(by.css('option[value="name"]'));
-      var phoneNameColumn = element.all(
-        by.repeater('phone in $ctrl.phones').column('phone.name')
-      );
+      var phoneNameColumn = element.all(by.repeater('phone in $ctrl.phones').column('phone.name'));
 
       function getNames() {
         return phoneNameColumn.map(function (elem) {
@@ -36,17 +34,19 @@ describe('PhoneCat Application', function () {
 
       queryField.sendKeys('tablet');
 
-      expect(getNames()).toEqual([
-        'Motorola XOOM\u2122 with Wi-Fi',
-        'MOTOROLA XOOM\u2122',
-      ]);
+      expect(getNames()).toEqual(['Motorola XOOM\u2122 with Wi-Fi', 'MOTOROLA XOOM\u2122']);
 
       nameOption.click();
 
-      expect(getNames()).toEqual([
-        'MOTOROLA XOOM\u2122',
-        'Motorola XOOM\u2122 with Wi-Fi',
-      ]);
+      expect(getNames()).toEqual(['MOTOROLA XOOM\u2122', 'Motorola XOOM\u2122 with Wi-Fi']);
+    });
+
+    it('should render phone specific links', function () {
+      var query = element(by.model('$ctrl.query'));
+      query.sendKeys('nexus');
+
+      element.all(by.css('.phones li a')).first().click();
+      expect(browser.getCurrentUrl()).toContain('index.html#!/phones/nexus-s');
     });
   });
 });

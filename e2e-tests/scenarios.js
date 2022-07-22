@@ -1,9 +1,17 @@
 'use strict';
 
+// AngularJS E2E Testing Guide:
+// https://docs.angularjs.org/guide/e2e-testing
+
 describe('PhoneCat Application', function () {
-  describe('phoneList', function () {
+  it('should redirect `index.html` to `index.html#!/phones', function () {
+    browser.get('index.html');
+    expect(browser.getCurrentUrl()).toContain('index.html#!/phones');
+  });
+
+  describe('View: Phone list', function () {
     beforeEach(function () {
-      browser.get('index.html');
+      browser.get('index.html#!/phones');
     });
 
     it('should filter the phone list as a user types into the search box', function () {
@@ -32,7 +40,7 @@ describe('PhoneCat Application', function () {
         });
       }
 
-      queryField.sendKeys('tablet');
+      queryField.sendKeys('tablet'); // Let's narrow the dataset to make the assertions shorter
 
       expect(getNames()).toEqual(['Motorola XOOM\u2122 with Wi-Fi', 'MOTOROLA XOOM\u2122']);
 
@@ -47,6 +55,16 @@ describe('PhoneCat Application', function () {
 
       element.all(by.css('.phones li a')).first().click();
       expect(browser.getCurrentUrl()).toContain('index.html#!/phones/nexus-s');
+    });
+  });
+
+  describe('View: Phone detail', function () {
+    beforeEach(function () {
+      browser.get('index.html#!/phones/nexus-s');
+    });
+
+    it('should display placeholder page with `phoneId`', function () {
+      expect(element(by.binding('$ctrl.phoneId')).getText()).toBe('nexus-s');
     });
   });
 });
